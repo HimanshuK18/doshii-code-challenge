@@ -110,16 +110,17 @@ BEGIN
 	 ON member_rewards.member_rewards_id = inserted.member_rewards_id;
 END
 
+GO
 INSERT INTO dbo.members (email,first_name,last_name)VALUES('mike.smith@wer.copm','Mike','Smith')
 INSERT INTO dbo.members (email,first_name,last_name)VALUES('mary.jone@wer.copm','Mary','Jone')
 INSERT INTO dbo.members (email,first_name,last_name)VALUES('a.kumar@top.copm','Amit','Kumar')
 
-
+GO
 INSERT INTO dbo.rewards (reward_name,reward_value) VALUES ('Christmas Sale',221)
 INSERT INTO dbo.rewards (reward_name,reward_value) VALUES ('Black Friday Sale',122)
 INSERT INTO dbo.rewards (reward_name,reward_value) VALUES ('New Year Sale',50)
 
-
+GO
 INSERT INTO dbo.member_rewards(member_id,reward_id,reward_active)VALUES(1,1,1)
 INSERT INTO dbo.member_rewards(member_id,reward_id,reward_active)VALUES(1,2,1)
 INSERT INTO dbo.member_rewards(member_id,reward_id,reward_active)VALUES(1,3,0)
