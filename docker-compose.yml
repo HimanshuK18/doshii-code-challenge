@@ -1,0 +1,25 @@
+version: '3'
+services:
+  sql-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.sql
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - sql-server
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

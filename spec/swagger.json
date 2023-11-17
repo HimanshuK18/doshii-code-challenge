@@ -1,0 +1,885 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Swagger Doshii - OpenAPI 3.0",
+    "description": "This is the Doshi member, reward server REST API documntaion",
+    "contact": {
+      "email": "himanshu.khurana@live.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Member",
+      "description": "Manage  members in the App"
+    },
+    {
+      "name": "Reward",
+      "description": "Manage  Rewards in the App"
+    },
+    {
+      "name": "Member Rewards",
+      "description": "Manage  members and their rewards in the App"
+    }
+  ],
+  "paths": {
+    "/member": {
+      "post": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "API to create new member",
+        "operationId": "createMember",
+        "requestBody": {
+          "description": "Create new member",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/MemberCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "API to update  member",
+        "operationId": "updateMember",
+        "requestBody": {
+          "description": "Update member",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/MemberUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Get Members",
+        "operationId": "getMembers",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberGet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Delete Member and theire rewards",
+        "operationId": "deleteMember",
+        "requestBody": {
+          "description": "Deletre member and the corresponding rewards",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/MemberDelete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDelete"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/member/{EmailId}": {
+      "get": {
+        "tags": [
+          "Member"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "EmailId",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "description": "Accept values true or false",
+            "name": "includeRewards",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "includeProperties",
+            "description": "Properties accepted are comma seperated and values can be only memberID,memberEmailID, memberFirstName, memberLastName, rewardName, rewardValue, rewardActive",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Get Member by Email ID",
+        "operationId": "getMember",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberRewardGet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/member/searchmember/{seachPhrase}": {
+      "get": {
+        "tags": [
+          "Member"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "seachPhrase",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Search Member by name",
+        "operationId": "searchMember",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberRewardGet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reward": {
+      "post": {
+        "tags": [
+          "Reward"
+        ],
+        "summary": "API to create new reward",
+        "operationId": "createReward",
+        "requestBody": {
+          "description": "Create new reward",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/RewardCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pet not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Reward"
+        ],
+        "summary": "API to update  member",
+        "operationId": "updateMember",
+        "requestBody": {
+          "description": "Update member",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/RewardUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reward not found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Reward"
+        ],
+        "summary": "Get Rewards",
+        "operationId": "getRewards",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberGet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reward/{RewardId}": {
+      "get": {
+        "tags": [
+          "Reward"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "RewardId",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "summary": "Get Reward by  ID",
+        "operationId": "getReward",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RewardGet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reward/searchreward/{seachPhrase}": {
+      "get": {
+        "tags": [
+          "Reward"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "seachPhrase",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Search Reward by name",
+        "operationId": "searchReward",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RewardGet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewardmember": {
+      "post": {
+        "tags": [
+          "Member Rewards"
+        ],
+        "summary": "API to rewards with memebers",
+        "operationId": "createRewardMember",
+        "requestBody": {
+          "description": "Create reward with member",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/RewardMemberCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Member Rewards"
+        ],
+        "summary": "API to rewards with memebers",
+        "operationId": "updateRewardMember",
+        "requestBody": {
+          "description": "Update reward with member",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/RewardMemberUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reward memebr not found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MemberGet": {
+        "type": "object",
+        "properties": {
+          "memberID": {
+            "type": "integer",
+            "example": "3"
+          },
+          "memberEmailID": {
+            "type": "string",
+            "example": "doshii@example.com"
+          },
+          "memberFirstName": {
+            "type": "string",
+            "example": "Steve"
+          },
+          "memberLastName": {
+            "type": "string",
+            "example": "Mitch"
+          }
+        }
+      },
+      "MemberRewardGet": {
+        "type": "object",
+        "properties": {
+          "memberID": {
+            "type": "integer",
+            "example": "3"
+          },
+          "memberEmailID": {
+            "type": "string",
+            "example": "doshii@example.com"
+          },
+          "memberFirstName": {
+            "type": "string",
+            "example": "Steve"
+          },
+          "memberLastName": {
+            "type": "string",
+            "example": "Mitch"
+          },
+          "rewardName": {
+            "type": "string",
+            "example": "Rewards Hot"
+          },
+          "rewardValue": {
+            "type": "integer",
+            "example": 22
+          }
+        }
+      },
+      "MemberCreate": {
+        "type": "object",
+        "properties": {
+          "memberEmailID": {
+            "type": "string",
+            "example": "doshii@example.com"
+          },
+          "memberFirstName": {
+            "type": "string",
+            "example": "Steve"
+          },
+          "memberLastName": {
+            "type": "string",
+            "example": "Mitch"
+          }
+        }
+      },
+      "MemberUpdate": {
+        "type": "object",
+        "properties": {
+          "memberID": {
+            "type": "string",
+            "example": "2"
+          },
+          "memberEmailID": {
+            "type": "string",
+            "example": "doshii@example.com"
+          },
+          "memberFirstName": {
+            "type": "string",
+            "example": "Steve"
+          },
+          "memberLastName": {
+            "type": "string",
+            "example": "Mitch"
+          }
+        }
+      },
+      "MemberDelete": {
+        "type": "object",
+        "properties": {
+          "memberID": {
+            "type": "string",
+            "example": "22"
+          }
+        }
+      },
+      "RewardGet": {
+        "type": "object",
+        "properties": {
+          "rewardID": {
+            "type": "integer",
+            "example": "3"
+          },
+          "rewardName": {
+            "type": "string",
+            "example": "Reward Chrimas"
+          },
+          "rewardValue": {
+            "type": "integer",
+            "example": 22
+          }
+        }
+      },
+      "RewardCreate": {
+        "type": "object",
+        "properties": {
+          "rewardName": {
+            "type": "string",
+            "example": "Reward Chrimas"
+          },
+          "rewardValue": {
+            "type": "integer",
+            "example": 22,
+            "minimum": 1,
+            "maximum": 999
+          }
+        }
+      },
+      "RewardUpdate": {
+        "type": "object",
+        "properties": {
+          "rewardId": {
+            "type": "integer",
+            "example": 2
+          },
+          "rewardName": {
+            "type": "string",
+            "example": "Reward Chrimas"
+          },
+          "rewardValue": {
+            "type": "integer",
+            "example": 22,
+            "minimum": 1,
+            "maximum": 999
+          }
+        }
+      },
+      "RewardMemberCreate": {
+        "type": "object",
+        "properties": {
+          "memberID": {
+            "type": "integer",
+            "example": 4
+          },
+          "rewardID": {
+            "type": "integer",
+            "example": 2
+          },
+          "active": {
+            "type": "integer",
+            "example": 1,
+            "enum": [
+              0,
+              1
+            ]
+          }
+        }
+      },
+      "RewardMemberUpdate": {
+        "type": "object",
+        "properties": {
+          "memberID": {
+            "type": "integer",
+            "example": 4
+          },
+          "rewardID": {
+            "type": "integer",
+            "example": 2
+          },
+          "active": {
+            "type": "integer",
+            "example": 1,
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "rewardMemeberID": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "errormessage": {
+            "type": "string",
+            "example": "Internal server error"
+          },
+          "errorCode": {
+            "type": "integer",
+            "example": "500"
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "##default"
+        }
+      }
+    }
+  }
+}
