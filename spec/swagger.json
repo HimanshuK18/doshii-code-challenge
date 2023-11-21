@@ -710,7 +710,8 @@
         "properties": {
           "memberEmailID": {
             "type": "string",
-            "example": "doshii@example.com"
+            "example": "doshii@example.com",
+            "format": "email"
           },
           "memberFirstName": {
             "type": "string",
